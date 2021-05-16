@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ShopBridgeCF.Data;
 using ShopBridgeCF.Models;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,15 @@ namespace ShopBridgeCF
         {
             if (env.IsDevelopment())
             {
+                
                 app.UseDeveloperExceptionPage();
+                // initialize data seeds
+                using var serviceScope = app.ApplicationServices
+                                            .GetRequiredService<IServiceScopeFactory>()
+                                            .CreateScope();
+                var service = serviceScope.ServiceProvider;
+
+                FakeDataSeeder.Seed(service);
             }
 
             db.Database.EnsureCreated();
