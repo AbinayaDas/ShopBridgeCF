@@ -19,8 +19,15 @@ namespace ShopBridgeCF.Models
         [Required]
         [StringLength(100)]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public decimal Price { get; set; }
+
+        [Range(0, 100, ErrorMessage = "Discount must be between 1 and 100.")]
+        public int Discount { get; set; }
+        public string ProductCategory { get; set; }
+        public byte[] ProductPhoto { get; set; }
     }
 
     public class ItemContext : DbContext
